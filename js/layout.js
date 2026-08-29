@@ -59,6 +59,10 @@
     return '<svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
+  function closeSvg(){
+    return '<svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  }
+
   function phoneSvg(){
     return '' +
       '<svg class="phone-icon" viewBox="0 0 24 24" fill="none">' +
@@ -121,7 +125,10 @@
           '<img src="media/avra-logo.png" alt="AVRA лого">' +
           '<span class="brand-text"><strong>AVRA</strong><span>Lounge &amp; Cocktail Ritual</span></span>' +
         '</a>' +
-        '<nav class="main-nav" id="mainNav"><ul class="nav-top-list">'+li+'</ul></nav>' +
+        '<nav class="main-nav" id="mainNav">' +
+          '<button class="nav-close" id="navClose" aria-label="Затвори мени">'+closeSvg()+'</button>' +
+          '<ul class="nav-top-list">'+li+'</ul>' +
+        '</nav>' +
         '<div class="header-actions">' +
           '<a class="btn btn-outline" href="tel:'+PHONE_TEL+'">Резервирај маса</a>' +
           '<button class="burger" id="burgerBtn" aria-label="Мени"><span></span><span></span><span></span></button>' +
@@ -133,11 +140,16 @@
     var burger = document.getElementById('burgerBtn');
     var nav = document.getElementById('mainNav');
     var scrim = document.getElementById('navScrim');
-    function closeNav(){ nav.classList.remove('open'); scrim.classList.remove('open'); }
+    var navClose = document.getElementById('navClose');
+    function closeNav(){ nav.classList.remove('open'); scrim.classList.remove('open'); burger.classList.remove('open'); }
     burger.addEventListener('click', function(){
-      nav.classList.toggle('open'); scrim.classList.toggle('open');
+      var willOpen = !nav.classList.contains('open');
+      nav.classList.toggle('open', willOpen);
+      scrim.classList.toggle('open', willOpen);
+      burger.classList.toggle('open', willOpen);
     });
     scrim.addEventListener('click', closeNav);
+    navClose.addEventListener('click', closeNav);
 
     // On mobile, tap category label toggles its submenu instead of navigating away
     var topItems = nav.querySelectorAll('.nav-top-list > li');
